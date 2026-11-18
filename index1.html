@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Quick Quiz</title>
+<style>
+body {
+  font-family: Arial;
+  background: #101827;
+  color: white;
+  text-align: center;
+  padding: 40px;
+}
+.box {
+  background: #1e293b;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 500px;
+  margin: auto;
+}
+button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #38bdf8;
+  font-size: 16px;
+}
+button:hover {
+  background: #0ea5e9;
+}
+#result {
+  color: #4ade80;
+  font-size: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h1>🧠 Quick Quiz</h1>
+<p id="question"></p>
+<div id="options"></div>
+<p id="result"></p>
+<p id="score"></p>
+<button onclick="restartQuiz()">Restart Quiz</button>
+</div>
+
+<script>
+const quiz = [
+ {q:"Which planet is known as the Red Planet?",
+  a:["Earth","Mars","Jupiter","Venus"], c:1},
+ {q:"Which language is used for web page styling?",
+  a:["Python","Java","CSS","C"], c:2},
+ {q:"What is the capital of India?",
+  a:["Mumbai","Hyderabad","Delhi","Chennai"], c:2},
+ {q:"Which is the largest ocean?",
+  a:["Atlantic","Indian","Arctic","Pacific"], c:3},
+ {q:"How many days are there in a week?",
+  a:["5","6","7","8"], c:2}
+];
+
+let current = 0;
+let points = 0;
+
+function loadQuestion() {
+  document.getElementById("result").textContent = "";
+
+  if(current >= quiz.length) {
+    document.getElementById("question").textContent =
+      "Quiz Completed! 🎉";
+    document.getElementById("options").innerHTML = "";
+    document.getElementById("score").textContent =
+      "Your score: " + points + " / " + quiz.length;
+    return;
+  }
+
+  document.getElementById("question").textContent =
+    (current + 1) + ". " + quiz[current].q;
+
+  document.getElementById("score").textContent =
+    "Score: " + points;
+
+  let html = "";
+
+  quiz[current].a.forEach((option, i) => {
+    html += `<button onclick="checkAnswer(${i})">${option}</button>`;
+  });
+
+  document.getElementById("options").innerHTML = html;
+}
+
+function checkAnswer(answer) {
+  if(answer === quiz[current].c) {
+    points++;
+    document.getElementById("result").textContent = "Correct! 🎉";
+  } else {
+    document.getElementById("result").textContent = "Wrong answer!";
+  }
+
+  current++;
+
+  setTimeout(loadQuestion, 700);
+}
+
+function restartQuiz() {
+  current = 0;
+  points = 0;
+  loadQuestion();
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
